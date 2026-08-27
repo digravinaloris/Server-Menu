@@ -1,6 +1,6 @@
 # ServerMenu
 
-A custom Paper 1.21.x plugin for Digra Survival SMP: a native Minecraft
+A custom Paper 1.21.x plugin for Survival SMP: a native Minecraft
 Dialog-based ESC pause-menu (Donut SMP style), fully configurable via
 `config.yml` — no client mod, no resource pack.
 

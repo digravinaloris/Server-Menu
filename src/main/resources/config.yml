@@ -1,0 +1,258 @@
+# ServerMenu 1.2.0 — nested Dialog support
+#
+# Button types:
+#   command -> executes a player command
+#   dialog  -> opens another ServerMenu dialog
+#   back    -> opens the dialog named in 'dialog' (usually main)
+#   close   -> closes the current dialog
+#
+# After changing this file, do a FULL server restart because dialogs are registered during bootstrap.
+
+title: "digra SMP"
+columns: 2
+button-width: 180
+
+# The dialog registered as servermenu:main is added to the ESC pause screen.
+# If dialogs.main exists below, it is used instead of this legacy buttons section.
+buttons:
+  homes: {name: "Homes", tooltip: "Open your homes", command: "homes"}
+  rtp: {name: "RTP", tooltip: "Randomly teleport", command: "rtp"}
+  auction: {name: "Auction", tooltip: "Open the auction house", command: "ah"}
+  rtp_queue: {name: "RTP Queue", tooltip: "View the RTP queue", command: "rtpqueue"}
+  quick_buy: {name: "Quick Buy", tooltip: "Quickly buy items", command: "quickbuy"}
+  friends: {name: "Friends", tooltip: "Manage your friends", command: "friends"}
+  orders: {name: "Orders", tooltip: "View your orders", command: "orders"}
+  share_shop: {name: "Share Shop", tooltip: "Share your shop", command: "shareshop"}
+  sell: {name: "Sell", tooltip: "Sell items", command: "sell"}
+  pay: {name: "Pay", tooltip: "Pay another player", command: "pay"}
+  teleport: {name: "Teleport", tooltip: "Open teleport options", command: "teleport"}
+  stats: {name: "Stats", tooltip: "View your stats", command: "stats"}
+  leaderboards: {name: "Leaderboards", tooltip: "View the leaderboards", command: "leaderboards"}
+  settings: {name: "Settings", tooltip: "Open server settings", command: "servermenu settings"}
+
+# Create as many nested dialogs as you want.
+# Example:
+# dialogs:
+#   main:
+#     title: "Donut SMP"
+#     external-title: "Donut SMP"
+#     columns: 2
+#     button-width: 320
+#     buttons:
+#       shop: {name: "Shop", type: dialog, dialog: shop, tooltip: "Open the shop"}
+#       homes: {name: "Homes", type: command, command: "homes"}
+#
+#   shop:
+#     title: "Shop"
+#     columns: 2
+#     button-width: 300
+#     buttons:
+#       blocks: {name: "Blocks", type: command, command: "shop blocks"}
+#       tools: {name: "Tools", type: command, command: "shop tools"}
+#       back: {name: "Back", type: back, dialog: main, tooltip: "Return to the main menu"}
+#
+# When dialogs.main exists, it replaces the legacy top-level 'buttons' menu.
+# Dialog IDs may contain letters, numbers, '_' and '-'.
+
+dialogs:
+  main:
+    title: "digra SMP"
+    external-title: "digra SMP"
+    columns: 2
+    button-width: 180
+    buttons:
+      homes: {name: "Homes", type: command, command: "homes", tooltip: "Open your homes"}
+      rtp: {name: "RTP", type: command, command: "rtp overworld", tooltip: "Randomly teleport"}
+      auction: {name: "Auction", type: command, command: "ah", tooltip: "Open the auction house"}
+      warp: {name: "Warp", type: dialog, dialog: warps, tooltip: "Choose a warp"}
+      shop: {name: "Shop", type: dialog, dialog: shop, tooltip: "Open the shop"}
+      friends: {name: "Friends", type: command, command: "friends", tooltip: "Manage your friends"}
+      orders: {name: "Orders", type: command, command: "orders", tooltip: "View your orders"}
+      shard_shop: {name: "Shard Shop", type: command, command: "shardshop", tooltip: "Open Shardshop"}
+      sell: {name: "Sell", type: command, command: "sell", tooltip: "Sell items"}
+      pay: {name: "Pay", type: dialog, dialog: pay, tooltip: "Pay another player"}
+      teleport: {name: "Teleport", type: dialog, dialog: teleport, tooltip: "Open teleport options"}
+      stats: {name: "Stats", type: dialog, dialog: stats, tooltip: "View your stats"}
+      leaderboards: {name: "Leaderboards", type: dialog, dialog: leaderboards, tooltip: "View the leaderboards"}
+      links: {name: "Links", type: dialog, dialog: links, tooltip: "Discord, Store, Rules, Social"}
+      settings: {name: "Settings", type: command, command: "settings", tooltip: "Open server settings"}
+      back: {name: "<red>Back</red>", type: close, tooltip: "Close"}
+
+  teleport:
+    title: "<gold>Teleport</gold>"
+    can-close-with-escape: true
+    columns: 2
+    button-width: 200
+    buttons:
+      spawn: {name: "Spawn", type: command, command: "spawn", tooltip: "Teleport to spawn"}
+      warp: {name: "Warp", type: dialog, dialog: warps, tooltip: "Choose a warp"}
+      tpa: {name: "TPA", type: dialog, dialog: tpa, tooltip: "Request to teleport to a player"}
+      back: {name: "Back", type: back, dialog: main}
+
+  # UltimateDonutSMP has no PlaceholderAPI placeholder listing warp names
+  # (same limitation as homes) — add one button per warp manually, matching
+  # the names you used with /setwarp <name>.
+  warps:
+    title: "<gold>Warps</gold>"
+    can-close-with-escape: true
+    columns: 2
+    button-width: 200
+    buttons:
+      spawn_warp: {name: "Spawn", type: command, command: "warp spawn", tooltip: "Teleport to the Spawn warp"}
+      shop_warp: {name: "Shop", type: command, command: "warp shop", tooltip: "Teleport to the Shop warp"}
+      back: {name: "Back", type: back, dialog: teleport}
+
+  tpa:
+    title: "<gold>Teleport Request</gold>"
+    can-close-with-escape: true
+    columns: 1
+    button-width: 300
+    inputs:
+      target:
+        type: text
+        label: "<aqua>Player Name</aqua>"
+    buttons:
+      send: {name: "<green>Send TPA</green>", type: command, command: "tpa {target}", tooltip: "Ask to teleport to them"}
+      send_here: {name: "<yellow>Send TPA Here</yellow>", type: command, command: "tpahere {target}", tooltip: "Ask them to teleport to you"}
+      back: {name: "<red>Back</red>", type: back, dialog: teleport}
+
+  links:
+    title: "<gold>Links</gold>"
+    can-close-with-escape: true
+    columns: 2
+    button-width: 200
+    buttons:
+      discord: {name: "Discord", type: command, command: "discord", tooltip: "Join our Discord"}
+      store: {name: "Store", type: command, command: "store", tooltip: "Visit the store"}
+      rules: {name: "Rules", type: command, command: "rules", tooltip: "Read the rules"}
+      social: {name: "Social", type: command, command: "social", tooltip: "Our social media"}
+      back: {name: "Back", type: back, dialog: main}
+
+  pay:
+    title: "<gold>Pay</gold>"
+    can-close-with-escape: true
+    columns: 2
+    button-width: 180
+    inputs:
+      target:
+        type: text
+        label: "<aqua>Player Name</aqua>"
+      amount:
+        type: text
+        label: "<aqua>Amount</aqua>"
+    buttons:
+      pay_eco: {name: "<green>Pay</green>", type: command, command: "pay {target} {amount} eco"}
+      back: {name: "<red>Back</red>", type: back, dialog: main}
+
+  leaderboards:
+    title: "<gold>Leaderboards</gold>"
+    can-close-with-escape: true
+    columns: 2
+    button-width: 180
+    body:
+      - "<gray>Choose a category:</gray>"
+    buttons:
+      money: {name: "<white>Money</white>", type: dialog, dialog: lbmoney}
+      shard: {name: "<white>Shard</white>", type: dialog, dialog: lbshard}
+      kill: {name: "<white>Kill</white>", type: dialog, dialog: lbkill}
+      death: {name: "<white>Death</white>", type: dialog, dialog: lbdeath}
+      playtime: {name: "<white>Playtime</white>", type: dialog, dialog: lbplaytime}
+      back: {name: "<red>Back</red>", type: back, dialog: main}
+
+  lbmoney:
+    title: "<gold>Leaderboard - Money</gold>"
+    can-close-with-escape: true
+    columns: 1
+    button-width: 300
+    body:
+      - "<gold>Top 5 Money</gold>"
+      - "<yellow>1. %economy_top_money_1_name% <gray>- <green>%economy_top_money_1_value_short%</green></yellow>"
+      - "<yellow>2. %economy_top_money_2_name% <gray>- <green>%economy_top_money_2_value_short%</green></yellow>"
+      - "<yellow>3. %economy_top_money_3_name% <gray>- <green>%economy_top_money_3_value_short%</green></yellow>"
+      - "<yellow>4. %economy_top_money_4_name% <gray>- <green>%economy_top_money_4_value_short%</green></yellow>"
+      - "<yellow>5. %economy_top_money_5_name% <gray>- <green>%economy_top_money_5_value_short%</green></yellow>"
+    buttons:
+      back: {name: "<red>Back</red>", type: back, dialog: leaderboards}
+
+  lbshard:
+    title: "<gold>Leaderboard - Shard</gold>"
+    can-close-with-escape: true
+    columns: 1
+    button-width: 300
+    body:
+      - "<gold>Top 5 Shard</gold>"
+      - "<yellow>1. %economy_top_shards_1_name% <gray>- <aqua>%economy_top_shards_1_value%</aqua></yellow>"
+      - "<yellow>2. %economy_top_shards_2_name% <gray>- <aqua>%economy_top_shards_2_value%</aqua></yellow>"
+      - "<yellow>3. %economy_top_shards_3_name% <gray>- <aqua>%economy_top_shards_3_value%</aqua></yellow>"
+      - "<yellow>4. %economy_top_shards_4_name% <gray>- <aqua>%economy_top_shards_4_value%</aqua></yellow>"
+      - "<yellow>5. %economy_top_shards_5_name% <gray>- <aqua>%economy_top_shards_5_value%</aqua></yellow>"
+    buttons:
+      back: {name: "<red>Back</red>", type: back, dialog: leaderboards}
+
+  lbkill:
+    title: "<gold>Leaderboard - Kills</gold>"
+    can-close-with-escape: true
+    columns: 1
+    button-width: 300
+    body:
+      - "<gold>Top 5 Kills</gold>"
+      - "<yellow>1. %economy_top_kills_1_name% <gray>- <red>%economy_top_kills_1_value%</red></yellow>"
+      - "<yellow>2. %economy_top_kills_2_name% <gray>- <red>%economy_top_kills_2_value%</red></yellow>"
+      - "<yellow>3. %economy_top_kills_3_name% <gray>- <red>%economy_top_kills_3_value%</red></yellow>"
+      - "<yellow>4. %economy_top_kills_4_name% <gray>- <red>%economy_top_kills_4_value%</red></yellow>"
+      - "<yellow>5. %economy_top_kills_5_name% <gray>- <red>%economy_top_kills_5_value%</red></yellow>"
+    buttons:
+      back: {name: "<red>Back</red>", type: back, dialog: leaderboards}
+
+  lbdeath:
+    title: "<gold>Leaderboard - Deaths</gold>"
+    can-close-with-escape: true
+    columns: 1
+    button-width: 300
+    body:
+      - "<gold>Top 5 Deaths</gold>"
+      - "<yellow>1. %economy_top_deaths_1_name% <gray>- <dark_red>%economy_top_deaths_1_value%</dark_red></yellow>"
+      - "<yellow>2. %economy_top_deaths_2_name% <gray>- <dark_red>%economy_top_deaths_2_value%</dark_red></yellow>"
+      - "<yellow>3. %economy_top_deaths_3_name% <gray>- <dark_red>%economy_top_deaths_3_value%</dark_red></yellow>"
+      - "<yellow>4. %economy_top_deaths_4_name% <gray>- <dark_red>%economy_top_deaths_4_value%</dark_red></yellow>"
+      - "<yellow>5. %economy_top_deaths_5_name% <gray>- <dark_red>%economy_top_deaths_5_value%</dark_red></yellow>"
+    buttons:
+      back: {name: "<red>Back</red>", type: back, dialog: leaderboards}
+
+  lbplaytime:
+    title: "<gold>Leaderboard - Playtime</gold>"
+    can-close-with-escape: true
+    columns: 1
+    button-width: 300
+    body:
+      - "<gold>Top 5 Playtime</gold>"
+      - "<yellow>1. %economy_top_playtime_1_name% <gray>- <aqua>%economy_top_playtime_1_value%</aqua></yellow>"
+      - "<yellow>2. %economy_top_playtime_2_name% <gray>- <aqua>%economy_top_playtime_2_value%</aqua></yellow>"
+      - "<yellow>3. %economy_top_playtime_3_name% <gray>- <aqua>%economy_top_playtime_3_value%</aqua></yellow>"
+      - "<yellow>4. %economy_top_playtime_4_name% <gray>- <aqua>%economy_top_playtime_4_value%</aqua></yellow>"
+      - "<yellow>5. %economy_top_playtime_5_name% <gray>- <aqua>%economy_top_playtime_5_value%</aqua></yellow>"
+    buttons:
+      back: {name: "<red>Back</red>", type: back, dialog: leaderboards}
+
+  stats:
+    title: "<gold>Stats</gold>"
+    can-close-with-escape: true
+    columns: 1
+    button-width: 300
+    body:
+      - "<gold>Your Stats</gold>"
+      - "<yellow>Money <gray>- <green>%economy_money_short%</green></yellow>"
+      - "<yellow>Shards <gray>- <aqua>%economy_shards_short%</aqua></yellow>"
+      - "<yellow>Kills <gray>- <red>%economy_kills%</red></yellow>"
+      - "<yellow>Deaths <gray>- <dark_red>%economy_deaths%</dark_red></yellow>"
+      - "<yellow>Playtime <gray>- <aqua>%economy_playtime%</aqua></yellow>"
+      - "<yellow>Killstreak <gray>- <red>%economy_killstreak%</red></yellow>"
+      - "<yellow>Highest Killstreak <gray>- <red>%economy_highestkillstreak%</red></yellow>"
+      - "<yellow>Blocks Placed <gray>- <white>%economy_blocksplaced%</white></yellow>"
+      - "<yellow>Blocks Broken <gray>- <white>%economy_blocksbroken%</white></yellow>"
+      - "<yellow>Mobs Killed <gray>- <red>%economy_mobskilled%</red></yellow>"
+      - "<yellow>Money Spent <gray>- <green>%economy_moneyspent%</green></yellow>"
+      - "<yellow>Money Made <gray>- <green>%economy_moneymade%</green></yellow>"
+      - "<yellow>Team <gray>- <white>%economy_team%</white></yellow>"
+    buttons:
+      back: {name: "<red>Back</red>", type: back, dialog: main}

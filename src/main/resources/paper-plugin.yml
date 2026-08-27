@@ -1,0 +1,17 @@
+name: ServerMenu
+version: 1.10.0
+main: fr.loris.servermenu.ServerMenu
+bootstrapper: fr.loris.servermenu.ServerMenuBootstrap
+api-version: '1.21.11'
+author: Loris
+description: DonutSMP-style pause menu with configurable nested dialogs.
+dependencies:
+  server:
+    PlaceholderAPI:
+      load: BEFORE
+      required: false
+      join-classpath: true
+permissions:
+  servermenu.reload:
+    description: Reload permission placeholder (full restart required for dialog config changes)
+    default: op
